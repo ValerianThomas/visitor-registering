@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Welcome</title>
+        <link rel="stylesheet" type="text/css" href="./assets/css/main.css">
+    </head>
+    <body>
+        <div class="rightLink">
+            <a href="admin.html">Admin</a>
+        </div>
+        <div id="container">
+            <div class="left">
+                <img src="./assets/pic/logo.jpg" />
+            </div>
+            <div id="top">
+                <div class="topPart ">
+                    <h3>Welcome</h3>
+                    <h3>Bienvenue</h3>
+                    <h3>Welkom</h3>
+                </div>
+            </div>
+            <div id="main">
+                <div id="title">
+                    <h2>Welcome visitors</h2>
+                    <h2>Acceuil visiteurs</h2>
+                    <h2>Onthaal bezoeker</h2>
+                </div>
+
+                <div class="formEntry">
+                    <div class="labelPack">
+                        <label>First name</label>
+                        <label>Prénom</label>
+                        <label>Voornam</label>
+                    </div>
+                    <div class="column">
+                        <input type="text" name="fName" id="fName" placeholder="Jean">
+                        <p class="errors" id="fName-errors"></p>
+                    </div>
+                </div>
+
+                <div class="formEntry">
+                    <div class="labelPack">
+                        <label>Name</label>
+                        <label>Nom</label>
+                        <label>Naam</label>
+                    </div>
+                    <div class="column">
+                        <input type="text" name="name" id="nname" placeholder="Dupont">
+                        <p class="errors" id="nname-errors"></p>
+                    </div>
+                </div>
+
+                <div class="formEntry">
+                    <div class="labelPack">
+                        <label>Numberplate</label>
+                        <label>Plaque d'immatriculation</label>
+                        <label>Nummerplaat</label>
+                    </div>
+                    <div class="column">
+                        <input type="text" name="plate" id="plate" placeholder="1-aaa-456">
+                        <p class="errors" id="plate-errors"></p>
+                    </div>
+                </div>
+
+                <div class="success" id="feedBack">
+                     Thank you!
+                </div>
+
+                <div class="formEntry">
+                    <BUTTON id="submit">Submit</BUTTON>
+                    <BUTTON id="clear">Clear</BUTTON>
+                </div>
+
+            </div>
+        </div>
+
+        <script>
+            // You can also require other files to run in this process
+            require("./renderer.js");
+
+            //initialize communication
+            const {ipcRenderer} = require('electron')
+
+            var fName = document.getElementById('fName');
+            var nname = document.getElementById("nname");
+            var plate = document.getElementById("plate");
+
+            var fNameErrors = document.getElementById('fName-errors');
+            var nnameErrors = document.getElementById("nname-errors");
+            var plateErrors = document.getElementById("plate-errors");
+
+            var feedBack = document.getElementById("feedBack");
+            
+            var nameToError = {
+                fName: fNameErrors,
+                nname: nnameErrors,
+                plate: plateErrors,
+            }
+
+            var clear = function(){
+                fName.value = "";
+                nname.value = "";
+                plate.value = "";
+            }
+
+            var clearErrors = function(){
+                fNameErrors.innerHTML = "";
+                nnameErrors.innerHTML = "";
+                plateErrors.innerHTML = "";
+            }
+
+            var setFeedBack = function(){
+                feedBack.style.display = "block";
+                setTimeout(function(){
+                    feedBack.style.display = "none";
+                }, 1000)
+            }
+
+            var onSubmit = function(){
+
+
+                var submit = {
+                    type: "insert",
+                    fName: fName.value,
+                    nname: nname.value,
+                    plate: plate.value,
+                }
+
+                var validation = ipcRenderer.sendSync('synchronous-message', submit);
+
+                clearErrors();
+                if(validation.ok){
+                    clear();
+                    setFeedBack();
+                }
+                else{
+                    for(var key in validation.errors){
+                        if(validation.errors[key].length > 0){
+                            nameToError[key].innerHTML = validation.errors[key].join(". ");
+                        }
+                    }
+                }
+            }
+
+            document.getElementById("submit").onclick = onSubmit;
+            document.getElementById("clear").onclick = function(){
+                clear();
+                clearErrors();
+            };
+            Array.prototype.slice.call(document.getElementsByTagName('input')).forEach(function(input){
+                input.addEventListener('keypress', function(e) {
+                    // Enter pressed?
+                    if(e.which == 10 || e.which == 13) {
+                        onSubmit();
+                    }
+                })
+            });
+
+        </script>
+    </body>
+</html>

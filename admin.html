@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Welcome</title>
+        <link rel="stylesheet" type="text/css" href="./assets/css/main.css">
+        <link rel="stylesheet" type="text/css" href="./assets/css/admin.css">
+    </head>
+    <body>
+
+        <div class="rightLink">
+            <a href="index.html">To form</a>
+        </div>
+
+        <div id="login">
+            <label>Password </label>
+            <input type="password" name="password" id="password">
+            <button id="submit">Submit</button>
+        </div>
+
+        <div id="hidden">
+            <input type="datetime-local" id="start-time" name="start-time"/>
+            <input type="datetime-local" id="end-time" name="end-time"/>
+            <button id="submitQuery" >Load</button>
+            <div id="queryResult"></div>
+        </div>
+
+        
+
+        <script>
+            // You can also require other files to run in this process
+            require("./renderer.js");
+
+            const {ipcRenderer} = require('electron')
+
+            var password = document.getElementById("password");
+            var hidden = document.getElementById("hidden");
+            var login = document.getElementById("login");
+            var startTime = document.getElementById("start-time");
+            var endTime = document.getElementById("end-time");
+            var results = document.getElementById("queryResult");
+
+            var onSubmit = function() {
+                var submit = {
+                    type: "checkPassword",
+                    value: password.value,
+                }
+
+                var validation = ipcRenderer.sendSync('synchronous-message', submit);
+
+
+                if(validation.ok){
+                    login.style.display = "none";
+                    hidden.style.display = "block";
+                }
+
+            }
+
+            var submitQuery = function(){
+                if(startTime.value !== "" && endTime.value !== ""){
+                    var start = new Date(startTime.value);
+                    var end = new Date(endTime.value);
+                    var result = ipcRenderer.sendSync("synchronous-message", {start:start.getTime(), end:end.getTime(), type: "query"});
+                    console.log(result);
+                    results.innerHTML = result;
+                }else{
+                    alert("wrong dates");
+                }
+            }
+
+            document.getElementById('submit').onclick = onSubmit;
+            document.getElementById("submitQuery").onclick = submitQuery;
+        </script>
+    </body>
+</html>

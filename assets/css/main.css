@@ -1,0 +1,100 @@
+body {
+	margin-left: 100px;
+	margin-right: 100px;
+}
+
+#container {
+
+}
+
+#top {
+	max-height: 350px;
+	align-items: center;
+	vertical-align: middle;
+	text-align: center;
+	margin-bottom: 100px;
+}
+
+.topPart{
+	display: inline-block;
+
+}
+
+.left {
+	position: absolute;
+	left: 150px;
+	top: 50px;
+}
+
+.right {
+	float: right;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#main {
+	text-align: center;
+}
+
+#title {
+	margin-bottom: 35px;
+}
+
+.formEntry{
+	margin-top: 10px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.formEntry .labelPack {
+	/*flex: 1;*/
+	flex-direction: column;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	margin-right: 15px;
+	min-width: 170px;
+}
+
+.labelPack label {
+	margin-top: 10px;
+	flex-direction: column;
+	display: flex;	
+}
+
+.formEntry input {
+	/*flex: 3;*/
+	max-height: 20px;
+	min-width: 250px;
+	margin-left: 15px;
+}
+
+.errors {
+	color: #ff0000;
+	padding: 10px;
+}
+
+.column {
+	flex-direction: column;
+	min-width: 250px;
+}
+
+.success {
+    padding: 20px;
+    background-color: #6BBD6E; 
+    color: white;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.rightLink {
+	position: absolute;
+	right: 20px;
+	top: 20px;
+}

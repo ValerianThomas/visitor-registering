@@ -1,0 +1,30 @@
+{
+  "name": "visitor-registering",
+  "version": "1.0.0",
+  "description": "A small electron app you can use to have visitors register themselves",
+  "main": "main.js",
+  "dependencies": {
+    "sql.js": "^0.5.0",
+    "crypto-hashing": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^2.0.7",
+    "electron-reload": "^1.2.5",
+    "electron-packager": "^12.1.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --prune=true --out=release-builds"
+  },
+  "author": "MaxLarue",
+  "license": "ISC",
+  "productName": "as-visitors-registering",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxLarue/visitor-registering/"
+  },
+  "bugs": {
+    "url": "https://github.com/MaxLarue/visitor-registering/issues"
+  },
+  "homepage": "https://github.com/MaxLarue/visitor-registering/#readme"
+}
